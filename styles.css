@@ -1,5 +1,14 @@
+.matrix {
+  border-radius: 10px;  /* Rounded corners */
+  padding: 20px;  /* Space inside the container */
+  margin: 20px;  /* Space outside the container */
+  background-color: #1c1c1c;  /* Background color */
+  width: auto;
+  display: inline-block;
+}
+
 .line {
     color: #00FF00;      /* Optional: set the text color */
     font-family: monospace, monospace;
     white-space: pre;
-  }
+}

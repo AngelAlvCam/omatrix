@@ -32,6 +32,7 @@ export class ExampleView extends ItemView {
     let local_count: number = 0;
     
     container.empty();
+    const matrix = container.createEl("div", { cls: "matrix" });
     for (let i = this.binary.length - 1; i >= 0; i--) {
       local_count++;
       let current_binary = this.binary[i];
@@ -46,7 +47,7 @@ export class ExampleView extends ItemView {
         break;
       }
 
-      container.createEl("div", { text: this.lines[i], cls: "line" });
+      matrix.createEl("div", { text: this.lines[i], cls: "line" });
     }
 
     // Remove items that can't be printed
