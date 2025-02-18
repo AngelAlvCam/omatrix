@@ -1,15 +1,18 @@
-import { ItemView, WorkspaceLeaf } from 'obsidian';
+import ExamplePlugin from 'main';
+import { ItemView, Plugin, WorkspaceLeaf } from 'obsidian';
 
 export const VIEW_TYPE_EXAMPLE = 'example-view';
 
 export class ExampleView extends ItemView {
   private intervalId: number | undefined;
-  private N: number = 20;
+  private N: number;
   private lines: string[] = [];
   private binary: number[][] = [];
+  private plugin;
 
-  constructor(leaf: WorkspaceLeaf) {
+  constructor(leaf: WorkspaceLeaf, plugin: ExamplePlugin) {
     super(leaf);
+    this.plugin = plugin;
   }
 
   getViewType() {
@@ -59,7 +62,7 @@ export class ExampleView extends ItemView {
   }
 
   generateRandomArray(length: number): number[] {
-    return Array.from({ length }, () => (Math.random() < 0.5 ? 0 : 1));
+    return Array.from({ length }, () => (Math.random() < 0.7 ? 0 : 1));
   }
 
   getRandomAlphanumeric(): string {
@@ -85,6 +88,9 @@ export class ExampleView extends ItemView {
   async onOpen() {
     const container = this.containerEl.children[1];
     container.empty();
+
+    // Set the matrix size
+    this.N = this.plugin.settings.matrixSize;
 
     // Store the interval ID
     this.intervalId = window.setInterval(() => {
