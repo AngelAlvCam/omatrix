@@ -1,11 +1,9 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "matrix-plugin",
+	"name": "Matrix Plugin",
 	"version": "1.0.0",
-	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "A plugin that displays the Matrix terminal effect in a view.",
+	"author": "Angel Alvarado",
+	"authorUrl": "https://github.com/AngelAlvCam",
 	"isDesktopOnly": false
 }
