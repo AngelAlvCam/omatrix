@@ -1,11 +1,12 @@
 import ExamplePlugin from 'main';
-import { ItemView, Plugin, WorkspaceLeaf } from 'obsidian';
+import { ItemView, WorkspaceLeaf } from 'obsidian';
 
 export const VIEW_TYPE_EXAMPLE = 'example-view';
 
 export class ExampleView extends ItemView {
   private intervalId: number | undefined;
-  private N: number;
+  private ROWS: number;
+  private COLS: number;
   private lines: string[];
   private binary: number[][];
   private plugin;
@@ -25,7 +26,7 @@ export class ExampleView extends ItemView {
 
   addLine() {
     const container = this.containerEl.children[1];
-    let current_binary = this.generateRandomArray(this.N);
+    let current_binary = this.generateRandomArray(this.COLS);
     this.binary.push(current_binary);
     this.lines.push(""); // Dummy placeholder
 
@@ -38,12 +39,12 @@ export class ExampleView extends ItemView {
       let current_binary = this.binary[i];
     
       // Ensure that i - 1 is >= 0 to prevent accessing undefined
-      let previous_binary = (i - 1 >= 0) ? this.binary[i - 1] : new Array(this.N).fill(0);
-      let previous_string = (i - 1 >= 0) ? this.lines[i - 1] : " ".repeat(this.N);
+      let previous_binary = (i - 1 >= 0) ? this.binary[i - 1] : new Array(this.COLS).fill(0);
+      let previous_string = (i - 1 >= 0) ? this.lines[i - 1] : " ".repeat(this.COLS);
       let current_string = this.merge(previous_binary, current_binary, previous_string);
       this.lines[i] = current_string;
 
-      if (local_count > this.N) {
+      if (local_count > this.ROWS) {
         break;
       }
 
@@ -51,7 +52,7 @@ export class ExampleView extends ItemView {
     }
 
     // Remove items that can't be printed
-    while (this.binary.length > this.N) {
+    while (this.binary.length > this.ROWS) {
       this.binary.shift();
       this.lines.shift();
     }
@@ -74,7 +75,7 @@ export class ExampleView extends ItemView {
 
   merge(previous_binary: number[], new_binary: number[], old_string: string): string {
     let output_string = "";
-    for (let i = 0; i < this.N; i++) {
+    for (let i = 0; i < this.COLS; i++) {
       if (previous_binary[i] == 1 && new_binary[i] == 1) {
         output_string += old_string[i];
       } else if (new_binary[i] == 1) {
@@ -90,12 +91,13 @@ export class ExampleView extends ItemView {
     const container = this.containerEl.children[1];
     container.empty();
 
-    // Set the matrix size
-    this.N = this.plugin.settings.matrixSize;
+    // Set the matrix parameters
+    this.ROWS = this.plugin.settings.matrixRows;
+    this.COLS = this.plugin.settings.matrixCols;
 
     // Initialize the lists
-    this.binary = Array.from({ length: this.N }, () => Array(this.N).fill(0)); 
-    this.lines = Array.from({ length: this.N }, () => " ".repeat(this.N)); 
+    this.binary = Array.from({ length: this.ROWS }, () => Array(this.COLS).fill(0)); 
+    this.lines = Array.from({ length: this.ROWS }, () => " ".repeat(this.COLS)); 
 
     // Store the interval ID
     this.intervalId = window.setInterval(() => {

@@ -14,17 +14,35 @@ export class ExampleSettingTab extends PluginSettingTab {
 
     containerEl.empty();
 
+    // Rows configuration
     new Setting(containerEl)
-      .setName('matrix size')
-      .setDesc('default matrix size')
+      .setName('Matrix Rows')
+      .setDesc('Number of rows in the matrix')
       .addText((text) =>
         text
           .setPlaceholder('number')
-          .setValue(this.plugin.settings.matrixSize.toString())
+          .setValue(this.plugin.settings.matrixRows.toString())
           .onChange(async (value) => {
             const parsedValue = parseInt(value);
             if (!isNaN(parsedValue)) {
-              this.plugin.settings.matrixSize = parseInt(value);
+              this.plugin.settings.matrixRows = parseInt(value);
+              await this.plugin.saveSettings();
+            }
+          })
+      );
+
+    // Cols configuration
+    new Setting(containerEl)
+      .setName('Matrix Colums')
+      .setDesc('Number of colums in the matrix')
+      .addText((text) =>
+        text
+          .setPlaceholder('number')
+          .setValue(this.plugin.settings.matrixCols.toString())
+          .onChange(async (value) => {
+            const parsedValue = parseInt(value);
+            if (!isNaN(parsedValue)) {
+              this.plugin.settings.matrixCols = parseInt(value);
               await this.plugin.saveSettings();
             }
           })

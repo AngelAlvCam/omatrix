@@ -4,10 +4,12 @@ import { ExampleSettingTab } from 'settings';
 
 // Settings definition, the user can define the size of the matrix
 interface ExamplePluginSettings {
-	matrixSize: number;
+	matrixRows: number
+	matrixCols: number
 }
 const DEFAULT_SETTINGS: Partial<ExamplePluginSettings> = {
-	matrixSize: 20
+	matrixRows: 10,
+	matrixCols: 20
 };
 
 export default class ExamplePlugin extends Plugin {
