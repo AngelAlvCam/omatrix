@@ -15,20 +15,16 @@ export class ExampleSettingTab extends PluginSettingTab {
     containerEl.empty();
 
     new Setting(containerEl)
-    .setName("Adjust Value")
-    .setDesc("Set a number with the slider")
-    .addSlider(slider => {
-        const valueText = containerEl.createEl("span", { text: `${this.plugin.settings.matrixSize}` });
-        slider
-        .setLimits(10, 50, 1) // Min: 0, Max: 100, Step: 1
-        .setValue(20) // Default value
-        .onChange(async (value) => {
-            this.plugin.settings.matrixSize = value;
+      .setName('matrix size')
+      .setDesc('default matrix size')
+      .addText((text) =>
+        text
+          .setPlaceholder('number')
+          .setValue(this.plugin.settings.matrixSize.toString())
+          .onChange(async (value) => {
+            this.plugin.settings.matrixSize = parseInt(value);
             await this.plugin.saveSettings();
-            console.log(`Slider changed to: ${value}`);
-            valueText.textContent = `${value}`;
-        });
-    });
-
+          })
+      );
   }
 }

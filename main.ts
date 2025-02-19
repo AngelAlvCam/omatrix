@@ -1,19 +1,20 @@
-import { ColorComponent, HexString, Plugin, WorkspaceLeaf } from 'obsidian';
+import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { ExampleView, VIEW_TYPE_EXAMPLE } from 'view';
 import { ExampleSettingTab } from 'settings';
 
-interface MatrixPluginSettings {
+// Settings definition, the user can define the size of the matrix
+interface ExamplePluginSettings {
 	matrixSize: number;
 }
-const DEFAULT_SETTINGS: Partial<MatrixPluginSettings> = {
+const DEFAULT_SETTINGS: Partial<ExamplePluginSettings> = {
 	matrixSize: 20
 };
 
 export default class ExamplePlugin extends Plugin {
-	settings: MatrixPluginSettings;
+	settings: ExamplePluginSettings;
 
 	async onload() {
-		// Attach settings
+		// Attach settings page to the plugin
 		await this.loadSettings();
 		this.addSettingTab(new ExampleSettingTab(this.app, this));
 
