@@ -6,8 +6,8 @@ export const VIEW_TYPE_EXAMPLE = 'example-view';
 export class ExampleView extends ItemView {
   private intervalId: number | undefined;
   private N: number;
-  private lines: string[] = [];
-  private binary: number[][] = [];
+  private lines: string[];
+  private binary: number[][];
   private plugin;
 
   constructor(leaf: WorkspaceLeaf, plugin: ExamplePlugin) {
@@ -92,6 +92,10 @@ export class ExampleView extends ItemView {
 
     // Set the matrix size
     this.N = this.plugin.settings.matrixSize;
+
+    // Initialize the lists
+    this.binary = Array.from({ length: this.N }, () => Array(this.N).fill(0)); 
+    this.lines = Array.from({ length: this.N }, () => " ".repeat(this.N)); 
 
     // Store the interval ID
     this.intervalId = window.setInterval(() => {
