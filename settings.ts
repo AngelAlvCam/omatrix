@@ -22,8 +22,11 @@ export class ExampleSettingTab extends PluginSettingTab {
           .setPlaceholder('number')
           .setValue(this.plugin.settings.matrixSize.toString())
           .onChange(async (value) => {
-            this.plugin.settings.matrixSize = parseInt(value);
-            await this.plugin.saveSettings();
+            const parsedValue = parseInt(value);
+            if (!isNaN(parsedValue)) {
+              this.plugin.settings.matrixSize = parseInt(value);
+              await this.plugin.saveSettings();
+            }
           })
       );
   }
