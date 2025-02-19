@@ -28,6 +28,7 @@ export class ExampleSettingTab extends PluginSettingTab {
               this.plugin.settings.matrixRows = parseInt(value);
               await this.plugin.saveSettings();
             }
+            console.log('Current rows value:', this.plugin.settings.matrixRows)
           })
       );
 
@@ -42,9 +43,10 @@ export class ExampleSettingTab extends PluginSettingTab {
           .onChange(async (value) => {
             const parsedValue = parseInt(value);
             if (!isNaN(parsedValue)) {
-              this.plugin.settings.matrixCols = parseInt(value);
+              this.plugin.settings.matrixCols = parsedValue;
               await this.plugin.saveSettings();
             }
+            console.log('Current cols value:', this.plugin.settings.matrixCols)
           })
       );
   }

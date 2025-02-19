@@ -9,7 +9,7 @@ export class ExampleView extends ItemView {
   private COLS: number;
   private lines: string[];
   private binary: number[][];
-  private plugin;
+  private plugin: ExamplePlugin;
 
   constructor(leaf: WorkspaceLeaf, plugin: ExamplePlugin) {
     super(leaf);
