@@ -49,5 +49,23 @@ export class ExampleSettingTab extends PluginSettingTab {
             console.log('Current cols value:', this.plugin.settings.matrixCols)
           })
       );
+
+    // Refresh rate configuration
+    new Setting(containerEl)
+      .setName('Refresh rate')
+      .setDesc('Number of milliseconds between lines update')
+      .addText((text) =>
+        text
+          .setPlaceholder('number')
+          .setValue(this.plugin.settings.refresh.toString())
+          .onChange(async (value) => {
+            const parsedValue = parseInt(value);
+            if (!isNaN(parsedValue)) {
+              this.plugin.settings.refresh = parsedValue;
+              await this.plugin.saveSettings();
+            }
+            console.log('Current refresh rate: ', this.plugin.settings.refresh)
+          })
+      );
   }
 }

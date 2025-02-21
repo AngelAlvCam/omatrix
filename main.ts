@@ -6,10 +6,12 @@ import { ExampleSettingTab } from 'settings';
 interface ExamplePluginSettings {
 	matrixRows: number
 	matrixCols: number
+	refresh: number
 }
 const DEFAULT_SETTINGS: Partial<ExamplePluginSettings> = {
 	matrixRows: 10,
-	matrixCols: 20
+	matrixCols: 20,
+	refresh: 100
 };
 
 export default class ExamplePlugin extends Plugin {

@@ -102,7 +102,7 @@ export class ExampleView extends ItemView {
     // Store the interval ID
     this.intervalId = window.setInterval(() => {
       this.addLine();
-    }, 100);
+    }, this.plugin.settings.refresh);
   }
 
   async onClose() {
