@@ -87,6 +87,11 @@ export class ExampleView extends ItemView {
     return output_string;
   }
 
+  restart() {
+    this.binary = Array.from({ length: this.ROWS }, () => Array(this.COLS).fill(0)); 
+    this.lines = Array.from({ length: this.ROWS }, () => " ".repeat(this.COLS)); 
+  }
+
   async onOpen() {
     const container = this.containerEl.children[1];
     container.empty();

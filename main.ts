@@ -1,6 +1,7 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { ExampleView, VIEW_TYPE_EXAMPLE } from 'view';
 import { ExampleSettingTab } from 'settings';
+import { fstat } from 'fs';
 
 // Settings definition, the user can define the size of the matrix
 interface ExamplePluginSettings {
@@ -42,6 +43,27 @@ export default class ExamplePlugin extends Plugin {
 				console.log("View activated through a command");
 				this.activateView();
 			}
+		});
+
+		// Restart the effect
+		this.addCommand({
+			id: 'refresh-view',
+			name: 'Refresh view',
+
+			// Check if the command can run...
+			checkCallback: (checking: boolean) => {
+				const activeViews = this.app.workspace.getLeavesOfType(VIEW_TYPE_EXAMPLE);
+				if (activeViews.length > 0) {
+					if (!checking) {
+						const activeView = activeViews[0].view;
+						if (activeView instanceof ExampleView) {
+							activeView.restart();
+						}
+					}
+					return true;
+				}
+				return false;
+			},
 		});
   	}
 
