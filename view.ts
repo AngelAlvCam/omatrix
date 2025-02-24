@@ -7,6 +7,7 @@ export class ExampleView extends ItemView {
   private intervalId: number | undefined;
   private ROWS: number;
   private COLS: number;
+  private REFRESH: number;
   private header: number[];
   private terminal: number[][];
   private textBoard: string[][];
@@ -98,6 +99,7 @@ export class ExampleView extends ItemView {
     // Set the matrix parameters
     this.ROWS = this.plugin.settings.matrixRows;
     this.COLS = this.plugin.settings.matrixCols;
+    this.REFRESH = this.plugin.settings.refresh;
 
     // Set the header as a array of 0s
     this.header = new Array(this.COLS).fill(0);
@@ -116,7 +118,7 @@ export class ExampleView extends ItemView {
     // Start a new interval to execute the algorithm
     this.intervalId = window.setInterval(() => {
       this.addLine();
-    }, this.plugin.settings.refresh);
+    }, this.REFRESH);
 
   }
 
