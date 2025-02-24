@@ -1,5 +1,4 @@
 import ExamplePlugin from 'main';
-import test from 'node:test';
 import { App, PluginSettingTab, Setting } from 'obsidian';
 
 export class ExampleSettingTab extends PluginSettingTab {
@@ -74,5 +73,19 @@ export class ExampleSettingTab extends PluginSettingTab {
           }
         })
       });
+
+    // Front Color settings
+    new Setting(containerEl)
+      .setName('Front color')
+      .setDesc('pick a color')
+      .addColorPicker(color => {
+        color.setValue(this.plugin.settings.frontColor);
+        color.onChange(async (value: string) => {
+          this.plugin.settings.frontColor = value;
+          await this.plugin.saveSettings();
+          document.documentElement.style.setProperty('--front-color', value);
+        })
+      });
+    
   }
 }
