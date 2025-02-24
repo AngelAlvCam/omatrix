@@ -9,6 +9,7 @@ export class ExampleView extends ItemView {
   private COLS: number;
   private header: number[];
   private terminal: number[][];
+  private text_board: string[][];
   private plugin: ExamplePlugin;
 
   constructor(leaf: WorkspaceLeaf, plugin: ExamplePlugin) {
@@ -29,7 +30,7 @@ export class ExampleView extends ItemView {
 
     // Update header
     for (let i = 0; i < this.COLS; i++) {
-      if (this.header[i] == 0 && Math.random() > 0.9) {
+      if (this.header[i] == 0 && Math.random() > 0.95) {
         this.header[i] = Math.floor(Math.random() * (this.COLS - (this.COLS / 2) + 1)) + (this.COLS / 2);
       }
     }
@@ -49,15 +50,15 @@ export class ExampleView extends ItemView {
     container.empty();
     const matrix = container.createEl("div", { cls: "matrix" });
     for (let i = 0; i < this.ROWS; i++) {
-      matrix.createEl("div", { text: this.toString(this.terminal[i]), cls: "line" });
+      matrix.createEl("div", { text: this.toString(this.terminal[i], i), cls: "line" });
     }
   }
 
-  toString(binary: number[]) {
+  toString(binary: number[], row: number) {
     let out = "";
-    for (let i = 0; i < this.ROWS; i++) {
+    for (let i = 0; i < this.COLS; i++) {
       if (binary[i] == 1) {
-        out += "%";
+        out += this.text_board[row][i];
       } else {
         out += " ";
       }
@@ -65,7 +66,21 @@ export class ExampleView extends ItemView {
     return out;
   }
 
-  initialize() {
+  // Function to generate a random alphanumeric character
+  randomAlphanumeric(): string {
+    const alphanumeric = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const index = Math.floor(Math.random() * alphanumeric.length);
+    return alphanumeric[index];
+  }
+
+  // Function to generate a 2D array of random alphanumeric characters
+  generateMatrix(n: number, m: number): string[][] {
+      return Array.from({ length: n }, () =>
+          Array.from({ length: m }, () => this.randomAlphanumeric())
+      );
+  }
+
+  restart() {
   }
 
   async onOpen() {
@@ -75,6 +90,7 @@ export class ExampleView extends ItemView {
     // Set the matrix parameters
     this.ROWS = this.plugin.settings.matrixRows;
     this.COLS = this.plugin.settings.matrixCols;
+    console.log("Matrix size: ", this.ROWS, this.COLS);
 
     // Set the header
     this.header = new Array(this.COLS).fill(0);
@@ -82,7 +98,10 @@ export class ExampleView extends ItemView {
     // Set the terminal
     this.terminal = Array.from({ length: this.ROWS }, () => new Array(this.COLS).fill(0));
 
-    // Store the interval ID
+    // Set text board
+    this.text_board = this.generateMatrix(this.ROWS, this.COLS);
+
+    // Store the interval ID to cancel it once the plugin is closed
     this.intervalId = window.setInterval(() => {
       this.addLine();
     }, this.plugin.settings.refresh);
