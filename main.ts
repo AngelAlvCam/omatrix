@@ -57,7 +57,7 @@ export default class ExamplePlugin extends Plugin {
 					if (!checking) {
 						const activeView = activeViews[0].view;
 						if (activeView instanceof ExampleView) {
-							activeView.restart();
+							activeView.initialize();
 						}
 					}
 					return true;
