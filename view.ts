@@ -52,6 +52,8 @@ export class ExampleView extends ItemView {
     for (let i = 0; i < this.ROWS; i++) {
       matrix.createEl("div", { text: this.toString(this.terminal[i], i), cls: "line" });
     }
+
+    this.updateTextMatrix();
   }
 
   toString(binary: number[], row: number) {
@@ -74,10 +76,20 @@ export class ExampleView extends ItemView {
   }
 
   // Function to generate a 2D array of random alphanumeric characters
-  generateMatrix(n: number, m: number): string[][] {
+  generateTextMatrix(n: number, m: number): string[][] {
       return Array.from({ length: n }, () =>
           Array.from({ length: m }, () => this.randomAlphanumeric())
       );
+  }
+
+  updateTextMatrix() {
+    for (let i = 0; i < this.ROWS; i++) {
+      for (let j = 0; j < this.COLS; j++) {
+        if (this.terminal[i][j] == 0) {
+          this.text_board[i][j] = this.randomAlphanumeric();
+        }
+      }
+    }
   }
 
   restart() {
@@ -99,7 +111,7 @@ export class ExampleView extends ItemView {
     this.terminal = Array.from({ length: this.ROWS }, () => new Array(this.COLS).fill(0));
 
     // Set text board
-    this.text_board = this.generateMatrix(this.ROWS, this.COLS);
+    this.text_board = this.generateTextMatrix(this.ROWS, this.COLS);
 
     // Store the interval ID to cancel it once the plugin is closed
     this.intervalId = window.setInterval(() => {
