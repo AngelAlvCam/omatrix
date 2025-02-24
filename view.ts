@@ -27,11 +27,13 @@ export class ExampleView extends ItemView {
 
   addLine() {
     const container = this.containerEl.children[1];
+    const max = this.ROWS;
+    const min = Math.floor(this.ROWS / 4);
 
     // Update header
     for (let i = 0; i < this.COLS; i++) {
       if (this.header[i] == 0 && Math.random() > 0.95) {
-        this.header[i] = Math.floor(Math.random() * (this.COLS - (this.COLS / 2) + 1)) + (this.COLS / 2);
+        this.header[i] = Math.floor(Math.random() * (max - min + 1)) + min; 
       }
     }
 
