@@ -83,7 +83,7 @@ export class ExampleSettingTab extends PluginSettingTab {
         color.onChange(async (value: string) => {
           this.plugin.settings.frontColor = value;
           await this.plugin.saveSettings();
-          document.documentElement.style.setProperty('--front-color', value);
+          document.documentElement.style.setProperty('--front-color', this.plugin.settings.frontColor);
         })
       });
     

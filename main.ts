@@ -70,6 +70,7 @@ export default class ExamplePlugin extends Plugin {
 
 	async loadSettings() {
 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+        document.documentElement.style.setProperty('--front-color', this.settings.frontColor);
 	}
 
 	async saveSettings() {
