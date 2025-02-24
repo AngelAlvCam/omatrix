@@ -9,7 +9,7 @@ export class ExampleView extends ItemView {
   private COLS: number;
   private header: number[];
   private terminal: number[][];
-  private text_board: string[][];
+  private textBoard: string[][];
   private plugin: ExamplePlugin;
 
   constructor(leaf: WorkspaceLeaf, plugin: ExamplePlugin) {
@@ -62,7 +62,7 @@ export class ExampleView extends ItemView {
     let out = "";
     for (let i = 0; i < this.COLS; i++) {
       if (binary[i] == 1) {
-        out += this.text_board[row][i];
+        out += this.textBoard[row][i];
       } else {
         out += " ";
       }
@@ -88,37 +88,44 @@ export class ExampleView extends ItemView {
     for (let i = 0; i < this.ROWS; i++) {
       for (let j = 0; j < this.COLS; j++) {
         if (this.terminal[i][j] == 0) {
-          this.text_board[i][j] = this.randomAlphanumeric();
+          this.textBoard[i][j] = this.randomAlphanumeric();
         }
       }
     }
   }
 
-  restart() {
+  initialize() {
+    // Set the matrix parameters
+    this.ROWS = this.plugin.settings.matrixRows;
+    this.COLS = this.plugin.settings.matrixCols;
+
+    // Set the header as a array of 0s
+    this.header = new Array(this.COLS).fill(0);
+
+    // Set the terminal as bidimensional array of 0s
+    this.terminal = Array.from({ length: this.ROWS }, () => new Array(this.COLS).fill(0));
+
+    // Set text board with random text
+    this.textBoard = this.generateTextMatrix(this.ROWS, this.COLS);
+
+    // Clear the interval if possible
+    if (this.intervalId !== null) {
+      window.clearInterval(this.intervalId);
+    }
+
+    // Start a new interval to execute the algorithm
+    this.intervalId = window.setInterval(() => {
+      this.addLine();
+    }, this.plugin.settings.refresh);
+
   }
 
   async onOpen() {
     const container = this.containerEl.children[1];
     container.empty();
 
-    // Set the matrix parameters
-    this.ROWS = this.plugin.settings.matrixRows;
-    this.COLS = this.plugin.settings.matrixCols;
-    console.log("Matrix size: ", this.ROWS, this.COLS);
-
-    // Set the header
-    this.header = new Array(this.COLS).fill(0);
-
-    // Set the terminal
-    this.terminal = Array.from({ length: this.ROWS }, () => new Array(this.COLS).fill(0));
-
-    // Set text board
-    this.text_board = this.generateTextMatrix(this.ROWS, this.COLS);
-
-    // Store the interval ID to cancel it once the plugin is closed
-    this.intervalId = window.setInterval(() => {
-      this.addLine();
-    }, this.plugin.settings.refresh);
+    // Start the algorithm
+    this.initialize();
   }
 
   async onClose() {
