@@ -1,4 +1,5 @@
 import ExamplePlugin from 'main';
+import test from 'node:test';
 import { App, PluginSettingTab, Setting } from 'obsidian';
 
 export class ExampleSettingTab extends PluginSettingTab {
@@ -18,54 +19,60 @@ export class ExampleSettingTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName('Matrix Rows')
       .setDesc('Number of rows in the matrix')
-      .addText((text) =>
-        text
-          .setPlaceholder('number')
-          .setValue(this.plugin.settings.matrixRows.toString())
-          .onChange(async (value) => {
-            const parsedValue = parseInt(value);
-            if (!isNaN(parsedValue)) {
-              this.plugin.settings.matrixRows = parseInt(value);
-              await this.plugin.saveSettings();
-            }
-            console.log('Current rows value:', this.plugin.settings.matrixRows)
-          })
-      );
+      .addText((text) => {
+        text.setValue(this.plugin.settings.matrixRows.toString());
+        text.setPlaceholder('number');
+        text.inputEl.setAttribute('type', 'number');
+        text.inputEl.setAttribute('min', '1');
+        text.inputEl.setAttribute('max', '50');
+        text.onChange(async (value) => {
+          const parsedValue = parseInt(value);
+          if (parsedValue > 1 && parsedValue <= 50) {
+            this.plugin.settings.matrixRows = parsedValue;
+            await this.plugin.saveSettings();
+            console.log('current rows value: ', this.plugin.settings.matrixRows);
+          }
+        })
+      });
 
     // Cols configuration
     new Setting(containerEl)
       .setName('Matrix Colums')
       .setDesc('Number of colums in the matrix')
-      .addText((text) =>
-        text
-          .setPlaceholder('number')
-          .setValue(this.plugin.settings.matrixCols.toString())
-          .onChange(async (value) => {
-            const parsedValue = parseInt(value);
-            if (!isNaN(parsedValue)) {
-              this.plugin.settings.matrixCols = parsedValue;
-              await this.plugin.saveSettings();
-            }
-            console.log('Current cols value:', this.plugin.settings.matrixCols)
-          })
-      );
+      .addText((text) => {
+        text.setValue(this.plugin.settings.matrixCols.toString());
+        text.setPlaceholder('number');
+        text.inputEl.setAttribute('type', 'number');
+        text.inputEl.setAttribute('min', '1');
+        text.inputEl.setAttribute('max', '50');
+        text.onChange(async (value) => {
+          const parsedValue = parseInt(value);
+          if (parsedValue > 1 && parsedValue <= 50) {
+            this.plugin.settings.matrixCols = parsedValue;
+            await this.plugin.saveSettings();
+            console.log('current matrix value: ', this.plugin.settings.matrixCols);
+          }
+        })
+      });
 
     // Refresh rate configuration
     new Setting(containerEl)
       .setName('Refresh rate')
       .setDesc('Number of milliseconds between lines update')
-      .addText((text) =>
-        text
-          .setPlaceholder('number')
-          .setValue(this.plugin.settings.refresh.toString())
-          .onChange(async (value) => {
-            const parsedValue = parseInt(value);
-            if (!isNaN(parsedValue)) {
-              this.plugin.settings.refresh = parsedValue;
-              await this.plugin.saveSettings();
-            }
-            console.log('Current refresh rate: ', this.plugin.settings.refresh)
-          })
-      );
+      .addText((text) => {
+        text.setValue(this.plugin.settings.refresh.toString());
+        text.setPlaceholder('number');
+        text.inputEl.setAttribute('type', 'number');
+        text.inputEl.setAttribute('min', '10');
+        text.inputEl.setAttribute('max', '1000');
+        text.onChange(async (value) => {
+          const parsedValue = parseInt(value);
+          if (parsedValue >= 10 && parsedValue <= 1000) {
+            this.plugin.settings.refresh = parsedValue;
+            await this.plugin.saveSettings();
+            console.log('current refresh value: ', this.plugin.settings.refresh);
+          }
+        })
+      });
   }
 }
