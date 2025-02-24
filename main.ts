@@ -1,18 +1,19 @@
 import { Plugin, WorkspaceLeaf } from 'obsidian';
 import { ExampleView, VIEW_TYPE_EXAMPLE } from 'view';
 import { ExampleSettingTab } from 'settings';
-import { fstat } from 'fs';
 
 // Settings definition, the user can define the size of the matrix
 interface ExamplePluginSettings {
 	matrixRows: number
 	matrixCols: number
 	refresh: number
+	frontColor: string
 }
 const DEFAULT_SETTINGS: Partial<ExamplePluginSettings> = {
 	matrixRows: 10,
 	matrixCols: 20,
-	refresh: 100
+	refresh: 100,
+	frontColor: '#00FF00',
 };
 
 export default class ExamplePlugin extends Plugin {
